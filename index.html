@@ -298,5 +298,111 @@ window.addEventListener('load', function() {
 });
 </script>
 
+
+
+<!-- ADMIN MODE -->
+<div id="admin-bar" style="display:none;position:fixed;bottom:0;left:0;right:0;background:#1a1a2e;border-top:2px solid #e94560;padding:12px 20px;z-index:9999;align-items:center;gap:12px;flex-wrap:wrap;">
+  <span style="color:#e94560;font-weight:800;font-size:13px;letter-spacing:1px;">&#9881;&#65039; ADMIN MODE</span>
+  <button onclick="saveChanges()" style="background:#e94560;color:white;border:none;padding:8px 20px;border-radius:8px;font-weight:700;cursor:pointer;font-size:13px;">&#128190; Save Changes</button>
+  <button onclick="addCard()" style="background:#1a3a1a;color:#4caf50;border:1px solid #4caf50;padding:8px 16px;border-radius:8px;font-weight:700;cursor:pointer;font-size:13px;">+ Add Card</button>
+  <span id="save-status" style="color:#4a9eff;font-size:13px;margin-left:8px;"></span>
+  <button onclick="exitAdmin()" style="margin-left:auto;background:transparent;color:#888;border:1px solid #444;padding:6px 14px;border-radius:8px;cursor:pointer;font-size:12px;">Exit Admin</button>
+</div>
+
+<script>
+(function(){
+  const ADMIN_PASS = 'Southwind123!';
+  const REPO = 'ajs1000GA/atl-ops-playbook';
+  const FILE = 'index.html';
+  let ghToken = null;
+
+  const footer = document.querySelector('.atl-banner');
+  if(footer){
+    let clicks = 0, timer;
+    footer.addEventListener('click', function(){
+      clicks++;
+      clearTimeout(timer);
+      timer = setTimeout(function(){ clicks = 0; }, 600);
+      if(clicks >= 3){ promptAdmin(); clicks = 0; }
+    });
+  }
+
+  if(location.search.includes('admin')) promptAdmin();
+
+  function promptAdmin(){
+    const pass = prompt('Enter admin password:');
+    if(pass === ADMIN_PASS){
+      const tok = prompt('Paste your GitHub token to enable saving (or Cancel to edit without saving):');
+      if(tok) ghToken = tok.trim();
+      enableAdmin();
+    } else if(pass !== null){
+      alert('Incorrect password.');
+    }
+  }
+
+  function enableAdmin(){
+    document.getElementById('admin-bar').style.display = 'flex';
+    document.querySelectorAll('.card h3, .card p, .checklist li, .section-title, .section-subtitle, .callout p, .callout-title, .atl-banner h2, .atl-banner p').forEach(function(el){
+      el.contentEditable = 'true';
+      el.style.outline = '1px dashed #e94560';
+      el.style.minWidth = '20px';
+    });
+    document.getElementById('save-status').textContent = 'Click any text to edit it.';
+  }
+
+  window.exitAdmin = function(){
+    document.getElementById('admin-bar').style.display = 'none';
+    document.querySelectorAll('[contenteditable="true"]').forEach(function(el){
+      el.removeAttribute('contenteditable');
+      el.style.outline = '';
+    });
+    ghToken = null;
+  };
+
+  window.addCard = function(){
+    const activeTab = document.querySelector('.tab-content.active');
+    if(!activeTab) return;
+    const section = activeTab.querySelector('.section');
+    const newCard = document.createElement('div');
+    newCard.className = 'card';
+    newCard.innerHTML = '<div class="step-header"><span class="step-num">NEW</span><h3 contenteditable="true" style="outline:1px dashed #e94560;">New Section Title</h3></div><p contenteditable="true" style="outline:1px dashed #e94560;margin-top:8px;">Click to edit this text...</p>';
+    section.appendChild(newCard);
+  };
+
+  window.saveChanges = async function(){
+    if(!ghToken){
+      const tok = prompt('Paste your GitHub token to save:');
+      if(!tok) return;
+      ghToken = tok.trim();
+    }
+    const status = document.getElementById('save-status');
+    status.textContent = 'Saving...';
+    document.querySelectorAll('[contenteditable]').forEach(function(el){ el.style.outline = 'none'; });
+    const newHtml = '<!DOCTYPE html>
+' + document.documentElement.outerHTML;
+    document.querySelectorAll('[contenteditable]').forEach(function(el){ el.style.outline = '1px dashed #e94560'; });
+    try {
+      const getResp = await fetch('https://api.github.com/repos/' + REPO + '/contents/' + FILE, {
+        headers: { 'Authorization': 'token ' + ghToken, 'Accept': 'application/vnd.github.v3+json' }
+      });
+      const fileData = await getResp.json();
+      const encoded = btoa(unescape(encodeURIComponent(newHtml)));
+      const putResp = await fetch('https://api.github.com/repos/' + REPO + '/contents/' + FILE, {
+        method: 'PUT',
+        headers: { 'Authorization': 'token ' + ghToken, 'Content-Type': 'application/json', 'Accept': 'application/vnd.github.v3+json' },
+        body: JSON.stringify({ message: 'Admin edit via playbook', content: encoded, sha: fileData.sha })
+      });
+      if(putResp.ok){
+        status.textContent = '&#10003; Saved! Live in ~30 seconds.';
+      } else {
+        const err = await putResp.json();
+        status.textContent = 'Error: ' + (err.message || 'unknown');
+      }
+    } catch(e) {
+      status.textContent = 'Error: ' + e.message;
+    }
+  };
+})();
+</script>
 </body>
 </html>
