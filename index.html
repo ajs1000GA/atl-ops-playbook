@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ATL 1-800-GOT-JUNK | Operations Playbook</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0a0a0a; color: #f0f0f0; min-height: 100vh; }
+    .header { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); padding: 40px 20px; text-align: center; border-bottom: 3px solid #e94560; }
+    .header .badge { background: #e94560; color: white; font-size: 11px; font-weight: 700; letter-spacing: 2px; padding: 6px 16px; border-radius: 20px; display: inline-block; margin-bottom: 16px; text-transform: uppercase; }
+    .header h1 { font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 900; letter-spacing: -1px; line-height: 1; }
+    .header h1 span { color: #e94560; }
+    .header .sub { color: #aaa; font-size: 14px; margin-top: 12px; letter-spacing: 1px; }
+    .nav { display: flex; overflow-x: auto; gap: 4px; padding: 16px 20px; background: #111; border-bottom: 1px solid #222; sticky-top: 0; position: sticky; top: 0; z-index: 100; }
+    .nav a { white-space: nowrap; padding: 8px 16px; border-radius: 20px; font-size: 13px; font-weight: 600; text-decoration: none; color: #aaa; background: #1a1a1a; transition: all 0.2s; }
+    .nav a:hover, .nav a.active { background: #e94560; color: white; }
+    .section { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
+    .section-title { font-size: 28px; font-weight: 900; margin-bottom: 8px; display: flex; align-items: center; gap: 12px; }
+    .section-title .icon { font-size: 32px; }
+    .section-subtitle { color: #888; font-size: 14px; margin-bottom: 32px; padding-left: 44px; }
+    .card { background: #111; border: 1px solid #222; border-radius: 16px; padding: 28px; margin-bottom: 20px; }
+    .card .step-header { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 16px; }
+    .step-num { background: #e94560; color: white; font-weight: 900; font-size: 13px; padding: 4px 10px; border-radius: 8px; white-space: nowrap; flex-shrink: 0; }
+    .card h3 { font-size: 18px; font-weight: 800; color: #f0f0f0; flex: 1; }
+    .time-badge { background: #1a1a2e; color: #4a9eff; font-size: 12px; font-weight: 700; padding: 4px 12px; border-radius: 8px; white-space: nowrap; border: 1px solid #2a3a5e; }
+    .card p { color: #bbb; line-height: 1.7; font-size: 15px; }
+    .checklist { list-style: none; margin-top: 12px; }
+    .checklist li { padding: 8px 0; color: #bbb; font-size: 14px; border-bottom: 1px solid #1a1a1a; display: flex; align-items: flex-start; gap: 10px; line-height: 1.5; }
+    .checklist li::before { content: '✓'; color: #4caf50; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+    .checklist li:last-child { border-bottom: none; }
+    .callout { background: linear-gradient(135deg, #1a0a0a, #2a0f0f); border: 1px solid #e94560; border-radius: 12px; padding: 20px 24px; margin-top: 24px; }
+    .callout .callout-title { color: #e94560; font-weight: 800; font-size: 13px; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; }
+    .callout p { color: #ddd; font-size: 14px; line-height: 1.7; }
+    .atl-banner { background: linear-gradient(135deg, #e94560, #c0392b); text-align: center; padding: 40px 20px; margin-top: 60px; }
+    .atl-banner h2 { font-size: 2rem; font-weight: 900; color: white; letter-spacing: 2px; }
+    .atl-banner p { color: rgba(255,255,255,0.8); margin-top: 8px; font-size: 13px; letter-spacing: 1px; }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+    @media (max-width: 600px) { .header { padding: 28px 16px; } .section { padding: 24px 16px; } .card { padding: 20px; } }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <div class="badge">Atlanta Operations</div>
+  <h1>THE ATL<br><span>PLAYBOOK</span></h1>
+  <div class="sub">1-800-GOT-JUNK · Field Operations Guide · All Staff</div>
+</div>
+
+<nav class="nav">
+  <a href="#daily" class="active" onclick="showTab('daily',this)">🕐 Daily Ops</a>
+  <a href="#execution" onclick="showTab('execution',this)">⚡ Job Execution</a>
+  <a href="#sales" onclick="showTab('sales',this)">💰 Sales &amp; Upsell</a>
+  <a href="#cx" onclick="showTab('cx',this)">⭐ CX Standards</a>
+  <a href="#culture" onclick="showTab('culture',this)">🔥 Culture</a>
+  <a href="#systems" onclick="showTab('systems',this)">🖥️ Systems</a>
+</nav>
+
+<!-- DAILY OPS -->
+<div id="daily" class="tab-content active">
+  <div class="section">
+    <div class="section-title"><span class="icon">🕐</span>Daily Ops Flow</div>
+    <div class="section-subtitle">Start of day → end of day</div>
+
+    <div class="card">
+      <div class="step-header">
+        <span class="step-num">01</span>
+        <div>
+          <h3>PRE-SHIFT: BEFORE YOU LEAVE THE YARD</h3>
+        </div>
+        <span class="time-badge">6:30–7:00 AM</span>
+      </div>
+      <h4 style="color:#e94560;font-size:14px;margin-bottom:8px;font-weight:700;">Truck Check</h4>
+      <p>Walk around — tires, lights, doors, hitch. Check fuel. Any damage gets logged before you roll. No exceptions.</p>
+      <br>
+      <h4 style="color:#e94560;font-size:14px;margin-bottom:8px;font-weight:700;">7:00 AM — Equipment Load-Out</h4>
+      <p>Dollies, straps, floor runners, brooms, signage, PPE. If it's not on the truck, you're going back for it.</p>
+      <br>
+      <h4 style="color:#e94560;font-size:14px;margin-bottom:8px;font-weight:700;">7:15 AM — Route Review + Huddle</h4>
+      <p>Team Leader reviews all jobs for the day. Flag any known challenges — crawl spaces, estate, demolitions. Address hazards before wheels roll.</p>
+      <br>
+      <h4 style="color:#e94560;font-size:14px;margin-bottom:8px;font-weight:700;">7:30 AM — First Job Depart</h4>
+      <p>On time. Every time. Customer is already expecting you.</p>
+    </div>
+
+    <div class="card">
+      <div class="step-header">
+        <span class="step-num">02</span>
+        <h3>MID-SHIFT: BETWEEN JOBS</h3>
+      </div>
+      <ul class="checklist">
+        <li>Truck cleared, swept, and ready for next load</li>
+        <li>Job closed in system — revenue captured before departing</li>
+        <li>Team Leader checks in with dispatch on next job ETA</li>
+        <li>Crew hydrated, fed, not running on empty</li>
+        <li>Any customer issues flagged to TL immediately — never buried</li>
+        <li>Review next job notes: access, special items, customer flags</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="step-header">
+        <span class="step-num">03</span>
+        <h3>END OF SHIFT</h3>
+        <span class="time-badge">EOD</span>
+      </div>
+      <h4 style="color:#e94560;font-size:14px;margin-bottom:8px;font-weight:700;">Truck Return &amp; Inspection</h4>
+      <p>Full unload, truck swept clean, any damage documented with photos before parking.</p>
+      <br>
+      <h4 style="color:#e94560;font-size:14px;margin-bottom:8px;font-weight:700;">Job Reconciliation</h4>
+      <p>All jobs closed in system. Revenue reconciled. No open loops.</p>
+      <br>
+      <h4 style="color:#e94560;font-size:14px;margin-bottom:8px;font-weight:700;">Team Leader Debrief</h4>
+      <p>Any wins, misses, near-misses, complaints, or customer shoutouts go in the debrief. What happened today shapes tomorrow.</p>
+    </div>
+
+    <div class="callout">
+      <div class="callout-title">🔑 Daily Non-Negotiables</div>
+      <p>You are the brand the moment you leave the yard. Uniform on, attitude locked in, truck clean. There's no "off" switch when you're in the vehicle.</p>
+    </div>
+  </div>
+</div>
+
+<!-- JOB EXECUTION -->
+<div id="execution" class="tab-content">
+  <div class="section">
+    <div class="section-title"><span class="icon">⚡</span>Job Execution</div>
+    <div class="section-subtitle">How we run every single job</div>
+    <div class="card">
+      <div class="step-header"><span class="step-num">01</span><h3>On Arrival</h3></div>
+      <ul class="checklist">
+        <li>Pull up clean, park professionally — you're being watched from the moment you arrive</li>
+        <li>Uniforms on, truck presentable, team sharp</li>
+        <li>Introduce yourself by name, confirm the job scope before touching anything</li>
+        <li>Do a full walkthrough with the customer — confirm what's going, what's staying</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="step-header"><span class="step-num">02</span><h3>During the Job</h3></div>
+      <ul class="checklist">
+        <li>Protect floors, walls, and doorframes — use runners and pads</li>
+        <li>Work efficiently but never rushed — mistakes happen when you rush</li>
+        <li>Communicate constantly with your partner — call out weight, obstacles, tight spaces</li>
+        <li>Keep the customer updated if scope changes mid-job</li>
+        <li>Never leave a customer alone in a awkward situation — always have a TL nearby</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="step-header"><span class="step-num">03</span><h3>Job Close</h3></div>
+      <ul class="checklist">
+        <li>Final walkthrough with customer — confirm everything was taken, nothing left behind</li>
+        <li>Collect payment before leaving — no exceptions</li>
+        <li>Ask for the review: "If we did a great job today, we'd really appreciate a Google review"</li>
+        <li>Close job in system immediately — revenue captured on site</li>
+        <li>Sweep the area, leave it cleaner than you found it</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- SALES & UPSELL -->
+<div id="sales" class="tab-content">
+  <div class="section">
+    <div class="section-title"><span class="icon">💰</span>Sales &amp; Upsell</div>
+    <div class="section-subtitle">Every job is a sales opportunity</div>
+    <div class="card">
+      <div class="step-header"><span class="step-num">01</span><h3>The Quote</h3></div>
+      <p>Always quote confidently. Show the price on the truck, walk them through it. Never apologize for the price — own it. Our service is worth it.</p>
+    </div>
+    <div class="card">
+      <div class="step-header"><span class="step-num">02</span><h3>Add-Ons &amp; Upsells</h3></div>
+      <ul class="checklist">
+        <li>Look for additional items during the walkthrough — "What about that shed out back?"</li>
+        <li>Offer labor-only if they want to keep items but need moving help</li>
+        <li>Mention seasonal cleanouts, storage units, garages</li>
+        <li>If they hesitate on price — remind them of the value: same-day, all-inclusive, no dump fees</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="step-header"><span class="step-num">03</span><h3>Referrals</h3></div>
+      <p>At job close: "Do you know anyone else who could use our services? We take great care of referrals." Every referral is a warm lead — treat it like gold.</p>
+    </div>
+    <div class="callout">
+      <div class="callout-title">💡 Sales Mindset</div>
+      <p>You're not selling junk removal. You're selling relief, space, and peace of mind. Lead with that energy and the close takes care of itself.</p>
+    </div>
+  </div>
+</div>
+
+<!-- CX STANDARDS -->
+<div id="cx" class="tab-content">
+  <div class="section">
+    <div class="section-title"><span class="icon">⭐</span>CX Standards</div>
+    <div class="section-subtitle">How we treat every customer, every time</div>
+    <div class="card">
+      <div class="step-header"><span class="step-num">01</span><h3>The Greeting</h3></div>
+      <p>High energy, warm, professional. First impressions are made in seconds. Smile, make eye contact, use their name if you know it.</p>
+    </div>
+    <div class="card">
+      <div class="step-header"><span class="step-num">02</span><h3>Communication</h3></div>
+      <ul class="checklist">
+        <li>Confirm arrival window the morning of — never let a customer wonder where you are</li>
+        <li>If you're running late, call before the window closes — not after</li>
+        <li>Speak clearly, no jargon, no inside jokes around customers</li>
+        <li>If a customer has a complaint — listen fully before responding, never get defensive</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="step-header"><span class="step-num">03</span><h3>The Review Ask</h3></div>
+      <p>"We really appreciate your business today. If you felt we did a great job, we'd love a Google review — it takes 30 seconds and means the world to our team."</p>
+      <br><p style="color:#e94560;font-weight:700;">Ask every. single. job. No exceptions.</p>
+    </div>
+  </div>
+</div>
+
+<!-- CULTURE -->
+<div id="culture" class="tab-content">
+  <div class="section">
+    <div class="section-title"><span class="icon">🔥</span>Culture</div>
+    <div class="section-subtitle">Who we are and how we show up</div>
+    <div class="card">
+      <h3 style="margin-bottom:12px;">Our Standards</h3>
+      <ul class="checklist">
+        <li>We are professionals. We act like it every moment we're on the clock.</li>
+        <li>We have each other's backs — on the truck and off it.</li>
+        <li>We don't cut corners. Ever. The right way takes the same amount of time once you learn it.</li>
+        <li>We treat every home like it's our own family's home.</li>
+        <li>We bring energy. Our attitude is contagious — make sure yours is the right kind.</li>
+      </ul>
+    </div>
+    <div class="callout">
+      <div class="callout-title">🔥 The ATL Standard</div>
+      <p>Atlanta doesn't do average. We are the best franchise in this system because we refuse to accept anything less. That starts with each of us, every single day.</p>
+    </div>
+  </div>
+</div>
+
+<!-- SYSTEMS -->
+<div id="systems" class="tab-content">
+  <div class="section">
+    <div class="section-title"><span class="icon">🖥️</span>Systems</div>
+    <div class="section-subtitle">The tools we use and how to use them</div>
+    <div class="card">
+      <div class="step-header"><span class="step-num">01</span><h3>Job Management System</h3></div>
+      <ul class="checklist">
+        <li>Every job gets opened and closed in system — no manual workarounds</li>
+        <li>Revenue is captured on-site before departure</li>
+        <li>Customer notes updated after each job — flag anything unusual</li>
+        <li>Photos taken for any damage claims or special items</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="step-header"><span class="step-num">02</span><h3>Communication Channels</h3></div>
+      <ul class="checklist">
+        <li>Dispatch: radio or app — stay connected all day</li>
+        <li>Team group chat: ops updates, schedule changes only — keep it professional</li>
+        <li>Issues escalate to TL first, then Ops Manager — don't skip the chain</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="step-header"><span class="step-num">03</span><h3>Reporting</h3></div>
+      <ul class="checklist">
+        <li>EOD report submitted by TL every night — no exceptions</li>
+        <li>Any incidents (damage, injury, complaint) reported same day</li>
+        <li>Weekly numbers reviewed every Monday morning huddle</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="atl-banner">
+  <h2>ATLANTA TO THE TOP!!!</h2>
+  <p>1-800-GOT-JUNK · ATL Operations Playbook · All Staff</p>
+</div>
+
+<script>
+function showTab(id, el) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.nav a').forEach(a => a.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  el.classList.add('active');
+  window.location.hash = id;
+}
+// On load, check hash
+window.addEventListener('load', function() {
+  const hash = window.location.hash.replace('#','');
+  if (hash) {
+    const link = document.querySelector('.nav a[href="#' + hash + '"]');
+    if (link) showTab(hash, link);
+  }
+});
+</script>
+
+</body>
+</html>
