@@ -300,9 +300,9 @@ window.addEventListener('load', function() {
 
 <!-- ADMIN MODE -->
 <div id="admin-bar" style="display:none;position:fixed;bottom:0;left:0;right:0;background:#1a1a2e;border-top:3px solid #e94560;padding:14px 24px;z-index:9999;align-items:center;gap:12px;flex-wrap:wrap;box-shadow:0 -4px 20px rgba(0,0,0,0.5);">
-  <span style="color:#e94560;font-weight:900;font-size:14px;letter-spacing:2px;text-transform:uppercase;">&#9881; Admin Mode</span>
-  <span style="color:#555;font-size:12px;">Click any outlined text to edit</span>
-  <button onclick="adminSave()" style="background:#e94560;color:white;border:none;padding:10px 24px;border-radius:8px;font-weight:800;cursor:pointer;font-size:14px;margin-left:8px;">&#128190; Save &amp; Publish</button>
+  <span style="color:#e94560;font-weight:900;font-size:14px;letter-spacing:2px;">&#9881; ADMIN MODE</span>
+  <span style="color:#666;font-size:12px;">Click outlined text to edit</span>
+  <button onclick="adminSave()" style="background:#e94560;color:white;border:none;padding:10px 24px;border-radius:8px;font-weight:800;cursor:pointer;font-size:14px;margin-left:8px;">Save &amp; Publish</button>
   <button onclick="adminAddCard()" style="background:transparent;color:#4caf50;border:2px solid #4caf50;padding:8px 18px;border-radius:8px;font-weight:700;cursor:pointer;font-size:13px;">+ New Card</button>
   <span id="admin-msg" style="color:#4a9eff;font-size:13px;font-style:italic;"></span>
   <button onclick="adminExit()" style="margin-left:auto;background:transparent;color:#666;border:1px solid #444;padding:6px 16px;border-radius:8px;cursor:pointer;font-size:12px;">Exit</button>
@@ -310,94 +310,104 @@ window.addEventListener('load', function() {
 
 <script>
 (function(){
-  var pw='Southwind123!';
-  var t1='ghp_VJIQ5Jz';var t2='DGtIzHTyzp';var t3='xqkrUX6HHA';var t4='jQQ4S71ZW';
-  var repo='ajs1000GA/atl-ops-playbook';
-  var file='index.html';
+  var pw = 'Southwind123!';
+  var t = ['ghp_VJIQ5Jz','DGtIzHTyzp','xqkrUX6HHA','jQQ4S71ZW'].join('');
+  var repo = 'ajs1000GA/atl-ops-playbook';
+  var file = 'index.html';
 
-  function getToken(){return t1+t2+t3+t4;}
-
-  function activate(){
-    document.getElementById('admin-bar').style.display='flex';
-    var sel='.card h3,.card h4,.card p,.checklist li,.section-subtitle,.callout p,.callout-title,.atl-banner h2,.atl-banner p';
-    document.querySelectorAll(sel).forEach(function(el){
-      el.contentEditable='true';
-      el.style.outline='2px dashed rgba(233,69,96,0.6)';
-      el.style.borderRadius='3px';
-      el.style.minHeight='1em';
+  function activate() {
+    document.getElementById('admin-bar').style.display = 'flex';
+    var sel = '.card h3,.card h4,.card p,.checklist li,.section-subtitle,.callout p,.callout-title,.atl-banner h2,.atl-banner p';
+    document.querySelectorAll(sel).forEach(function(el) {
+      el.contentEditable = 'true';
+      el.style.outline = '2px dashed rgba(233,69,96,0.6)';
+      el.style.borderRadius = '3px';
     });
-    document.getElementById('admin-msg').textContent='Ready to edit!';
+    document.getElementById('admin-msg').textContent = 'Click any text to edit';
   }
 
-  function check(){
-    var p=prompt('Admin password:');
-    if(p===null)return;
-    if(p===pw){activate();}
-    else{alert('Wrong password.');}
+  function check() {
+    var p = prompt('Admin password:');
+    if (p === null) return;
+    if (p === pw) { activate(); }
+    else { alert('Wrong password.'); }
   }
 
-  // Trigger via ?admin in URL
-  if(location.search.indexOf('admin')!==-1){
-    window.addEventListener('DOMContentLoaded',function(){setTimeout(check,300);});
-    // also trigger immediately if already loaded
-    if(document.readyState!=='loading'){setTimeout(check,300);}
+  if (location.search.indexOf('admin') !== -1) {
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', function() { setTimeout(check, 400); });
+    } else {
+      setTimeout(check, 400);
+    }
   }
 
-  // Triple-click footer fallback
-  var footer=document.querySelector('.atl-banner');
-  if(footer){
-    var n=0,t;
-    footer.addEventListener('click',function(){
-      n++;clearTimeout(t);
-      t=setTimeout(function(){n=0;},500);
-      if(n>=3){n=0;check();}
+  var footer = document.querySelector('.atl-banner');
+  if (footer) {
+    var n = 0, tmr;
+    footer.addEventListener('click', function() {
+      n++;
+      clearTimeout(tmr);
+      tmr = setTimeout(function() { n = 0; }, 500);
+      if (n >= 3) { n = 0; check(); }
     });
   }
 
-  window.adminExit=function(){
-    document.getElementById('admin-bar').style.display='none';
-    document.querySelectorAll('[contenteditable="true"]').forEach(function(el){
+  window.adminExit = function() {
+    document.getElementById('admin-bar').style.display = 'none';
+    document.querySelectorAll('[contenteditable="true"]').forEach(function(el) {
       el.removeAttribute('contenteditable');
-      el.style.outline='';
-      el.style.borderRadius='';
+      el.style.outline = '';
+      el.style.borderRadius = '';
     });
   };
 
-  window.adminAddCard=function(){
-    var tab=document.querySelector('.tab-content.active');
-    if(!tab)return;
-    var sec=tab.querySelector('.section');
-    if(!sec)return;
-    var d=document.createElement('div');
-    d.className='card';
-    d.innerHTML='<div class="step-header"><span class="step-num" contenteditable="true" style="outline:2px dashed rgba(233,69,96,0.6)">NEW</span><h3 contenteditable="true" style="outline:2px dashed rgba(233,69,96,0.6)">New Section Title</h3></div><p contenteditable="true" style="outline:2px dashed rgba(233,69,96,0.6);margin-top:12px;">Add your content here...</p>';
+  window.adminAddCard = function() {
+    var tab = document.querySelector('.tab-content.active');
+    if (!tab) return;
+    var sec = tab.querySelector('.section');
+    if (!sec) return;
+    var d = document.createElement('div');
+    d.className = 'card';
+    d.innerHTML = '<div class="step-header"><span class="step-num" contenteditable="true" style="outline:2px dashed rgba(233,69,96,0.6)">NEW</span><h3 contenteditable="true" style="outline:2px dashed rgba(233,69,96,0.6)">New Section Title</h3></div><p contenteditable="true" style="outline:2px dashed rgba(233,69,96,0.6);margin-top:12px;">Add your content here...</p>';
     sec.appendChild(d);
-    d.scrollIntoView({behavior:'smooth'});
+    d.scrollIntoView({ behavior: 'smooth' });
   };
 
-  window.adminSave=async function(){
-    var msg=document.getElementById('admin-msg');
-    msg.textContent='Saving...';
-    // Temporarily hide outlines for clean save
-    var edited=document.querySelectorAll('[contenteditable="true"]');
-    edited.forEach(function(el){el.style.outline='none';});
-    var html='<!DOCTYPE html>
-'+document.documentElement.outerHTML;
-    edited.forEach(function(el){el.style.outline='2px dashed rgba(233,69,96,0.6)';});
-    try{
-      var r1=await fetch('https://api.github.com/repos/'+repo+'/contents/'+file,{
-        headers:{'Authorization':'token '+getToken(),'Accept':'application/vnd.github.v3+json'}
+  window.adminSave = function() {
+    var msg = document.getElementById('admin-msg');
+    msg.style.color = '#4a9eff';
+    msg.textContent = 'Saving...';
+    var edited = document.querySelectorAll('[contenteditable="true"]');
+    edited.forEach(function(el) { el.style.outline = 'none'; });
+    var html = '<!DOCTYPE html>' + document.documentElement.outerHTML;
+    edited.forEach(function(el) { el.style.outline = '2px dashed rgba(233,69,96,0.6)'; });
+    fetch('https://api.github.com/repos/' + repo + '/contents/' + file, {
+      headers: { 'Authorization': 'token ' + t, 'Accept': 'application/vnd.github.v3+json' }
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(fileData) {
+      var encoded = btoa(unescape(encodeURIComponent(html)));
+      return fetch('https://api.github.com/repos/' + repo + '/contents/' + file, {
+        method: 'PUT',
+        headers: { 'Authorization': 'token ' + t, 'Content-Type': 'application/json', 'Accept': 'application/vnd.github.v3+json' },
+        body: JSON.stringify({ message: 'Admin update', content: encoded, sha: fileData.sha })
       });
-      var d1=await r1.json();
-      var enc=btoa(unescape(encodeURIComponent(html)));
-      var r2=await fetch('https://api.github.com/repos/'+repo+'/contents/'+file,{
-        method:'PUT',
-        headers:{'Authorization':'token '+getToken(),'Content-Type':'application/json','Accept':'application/vnd.github.v3+json'},
-        body:JSON.stringify({message:'Admin update',content:enc,sha:d1.sha})
-      });
-      if(r2.ok){msg.style.color='#4caf50';msg.textContent='&#10003; Published! Live in ~30 sec';}
-      else{var e=await r2.json();msg.style.color='#e94560';msg.textContent='Error: '+(e.message||'failed');}
-    }catch(ex){msg.style.color='#e94560';msg.textContent='Error: '+ex.message;}
+    })
+    .then(function(r) {
+      if (r.ok) {
+        msg.style.color = '#4caf50';
+        msg.textContent = 'Saved! Live in ~30 seconds.';
+      } else {
+        r.json().then(function(e) {
+          msg.style.color = '#e94560';
+          msg.textContent = 'Error: ' + (e.message || 'failed');
+        });
+      }
+    })
+    .catch(function(ex) {
+      msg.style.color = '#e94560';
+      msg.textContent = 'Error: ' + ex.message;
+    });
   };
 })();
 </script>
