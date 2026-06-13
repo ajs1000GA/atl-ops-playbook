@@ -47,16 +47,16 @@
 </div>
 
 <nav class="nav">
-  <a href="#daily" class="active" onclick="showTab('daily',this)">🕐 Daily Ops</a>
-  <a href="#execution" onclick="showTab('execution',this)">⚡ Job Execution</a>
+  <a href="#daily" class="" onclick="showTab('daily',this)">🕐 Daily Ops</a>
+  <a href="#execution" onclick="showTab('execution',this)" class="active">⚡ Job Execution</a>
   <a href="#sales" onclick="showTab('sales',this)">💰 Sales &amp; Upsell</a>
   <a href="#cx" onclick="showTab('cx',this)">⭐ CX Standards</a>
   <a href="#culture" onclick="showTab('culture',this)">🔥 Culture</a>
-  <a href="#systems" onclick="showTab('systems',this)">🖥️ Systems</a>
+  <a href="#systems" onclick="showTab('systems',this)" class="">🖥️ Systems</a>
 </nav>
 
 <!-- DAILY OPS -->
-<div id="daily" class="tab-content active">
+<div id="daily" class="tab-content">
   <div class="section">
     <div class="section-title"><span class="icon">🕐</span>Daily Ops Flow</div>
     <div class="section-subtitle" contenteditable="true" style="outline: none; border-radius: 3px;">Start of day → end of day</div>
@@ -121,10 +121,10 @@
 </div>
 
 <!-- JOB EXECUTION -->
-<div id="execution" class="tab-content">
+<div id="execution" class="tab-content active">
   <div class="section">
     <div class="section-title"><span class="icon">⚡</span>Job Execution</div>
-    <div class="section-subtitle" contenteditable="true" style="outline: none; border-radius: 3px;">How we run every single job</div>
+    <div class="section-subtitle" contenteditable="true" style="outline: none; border-radius: 3px;">What we expect from TTM</div>
     <div class="card">
       <div class="step-header"><span class="step-num">01</span><h3 contenteditable="true" style="outline: none; border-radius: 3px;">On Arrival</h3></div>
       <ul class="checklist">
@@ -302,7 +302,7 @@ window.addEventListener('load', function() {
   <span style="color:#666;font-size:12px;">Click outlined text to edit</span>
   <button onclick="adminSave()" style="background:#e94560;color:white;border:none;padding:10px 24px;border-radius:8px;font-weight:800;cursor:pointer;font-size:14px;margin-left:8px;">Save &amp; Publish</button>
   <button onclick="adminAddCard()" style="background:transparent;color:#4caf50;border:2px solid #4caf50;padding:8px 18px;border-radius:8px;font-weight:700;cursor:pointer;font-size:13px;">+ New Card</button>
-  <span id="admin-msg" style="color:#4a9eff;font-size:13px;font-style:italic;">Saving...</span>
+  <span id="admin-msg" style="color: rgb(74, 158, 255); font-size: 13px; font-style: italic;">Saving...</span>
   <button onclick="adminExit()" style="margin-left:auto;background:transparent;color:#666;border:1px solid #444;padding:6px 16px;border-radius:8px;cursor:pointer;font-size:12px;">Exit</button>
 </div>
 
